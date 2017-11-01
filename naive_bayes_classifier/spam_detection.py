@@ -29,7 +29,7 @@ def get_message_spam_probability(__dict, message):
 
     print count_s, count_l
     ps = []
-    bounds = {"lower": [0.1, 0.45], "upper": [0.55, 0.9]}
+    bounds = {"lower": [0.1, 0.35], "upper": [0.65, 0.9]}
 
     for word in words:
         if word in __dict:
@@ -40,10 +40,8 @@ def get_message_spam_probability(__dict, message):
 
     print ps
 
-    mul_p = 1.
-    mul_p_1 = 1.
+    c = 1.
     for p in ps:
-        mul_p *= p
-        mul_p_1 *= (1 - p)
+        c *= (1 - p) / p
 
-    return mul_p / float(mul_p + mul_p_1)
+    return 1. / (1. + c)
