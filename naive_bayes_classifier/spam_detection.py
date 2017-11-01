@@ -27,18 +27,18 @@ def get_message_spam_probability(__dict, message):
     words = np.concatenate((message.subject, message.text), axis=0)
     count_s, count_l = __get_denominators(__dict, words)
 
-    print count_s, count_l
+    # print count_s, count_l
     ps = []
     bounds = {"lower": [0.1, 0.35], "upper": [0.65, 0.9]}
 
     for word in words:
         if word in __dict:
             p_sw = __get_word_spam_probability(__dict, word, count_s, count_l)
-            if ((p_sw > bounds["lower"][0]) & (p_sw < bounds["lower"][1])) | (
-                        (p_sw > bounds["upper"][0]) & (p_sw < bounds["upper"][1])):
+            if ((p_sw > bounds["lower"][0]) and (p_sw < bounds["lower"][1])) or (
+                        (p_sw > bounds["upper"][0]) and (p_sw < bounds["upper"][1])):
                 ps.append(p_sw)
 
-    print ps
+    # print ps
 
     c = 1.
     for p in ps:

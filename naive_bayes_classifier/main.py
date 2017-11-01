@@ -5,16 +5,18 @@ import reader
 from model.message import MessageType
 
 cv = ml.create_cv_from_blocks(reader.read_blocks("pu1"))
-__dict = ml.create_dict(cv[0]["train"], count_twice=False)
-i = 4
 
-answer = [0, 0]
-for message in cv[0]["test"]:
-    print "--------------"
-    p = sd.get_message_spam_probability(__dict, message)
-    if ((p > 0.5) & (message.type == 1)) | ((p <= 0.5) & (message.type == 2)):
-        answer[0] += 1
-    else:
-        answer[1] += 1
+for fold in cv:
+    __dict = ml.create_dict(fold["train"], count_twice=False)
 
-print "correct: " + str(answer[0]) + ", incorrect: " + str(answer[1])
+    orig = []
+    test = []
+    for message in fold["test"]:
+        p = sd.get_message_spam_probability(__dict, message)
+        orig.append(message.type)
+        if p > 0.5:
+            test.append(MessageType.SPAM)
+        else:
+            test.append(MessageType.LEGIT)
+
+    print ml.contingency(orig, test)
