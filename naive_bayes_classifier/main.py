@@ -1,11 +1,13 @@
 import ml
 import spam_detection as sd
+import numpy as np
 import reader
 
 from model.message import MessageType
 
 cv = ml.create_cv_from_blocks(reader.read_blocks("pu1"))
 
+f1s = []
 for fold in cv:
     __dict = ml.create_dict(fold["train"], count_twice=False)
 
@@ -19,4 +21,8 @@ for fold in cv:
         else:
             test.append(MessageType.LEGIT)
 
-    print ml.contingency(orig, test)
+    table = ml.contingency(orig, test)
+    f1s.append(table["F1"])
+    print table
+
+print np.array(f1s).mean()
