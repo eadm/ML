@@ -2,11 +2,10 @@ import numpy as np
 
 
 def __get_word_spam_probability(__dict, word, count_s, count_l):
-
     p_ws = __dict[word]["spam"] / float(count_s)
     p_wl = __dict[word]["legit"] / float(count_l)
 
-    if p_ws != 0:
+    if p_ws + p_wl != 0:
         return p_ws / float(p_ws + p_wl)
 
     return -1
@@ -17,8 +16,9 @@ def __get_denominators(__dict, words):
     count_l = 0
 
     for word in words:
-        count_s += __dict[word]["spam"]
-        count_l += __dict[word]["legit"]
+        if word in __dict:
+            count_s += __dict[word]["spam"]
+            count_l += __dict[word]["legit"]
 
     return count_s, count_l
 
@@ -29,12 +29,14 @@ def get_message_spam_probability(__dict, message):
 
     print count_s, count_l
     ps = []
-    bounds = {"lower": [0.1, 0.35], "upper": [0.65, 0.9]}
+    bounds = {"lower": [0.1, 0.45], "upper": [0.55, 0.9]}
 
     for word in words:
-        p_sw = __get_word_spam_probability(__dict, word, count_s, count_l)
-        if ((p_sw > bounds["lower"][0]) & (p_sw < bounds["lower"][1])) | ((p_sw > bounds["upper"][0]) & (p_sw < bounds["upper"][1])):
-            ps.append(p_sw)
+        if word in __dict:
+            p_sw = __get_word_spam_probability(__dict, word, count_s, count_l)
+            if ((p_sw > bounds["lower"][0]) & (p_sw < bounds["lower"][1])) | (
+                        (p_sw > bounds["upper"][0]) & (p_sw < bounds["upper"][1])):
+                ps.append(p_sw)
 
     print ps
 
