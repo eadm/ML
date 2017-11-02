@@ -13,10 +13,12 @@ for fold in cv:
 
     orig = []
     test = []
+    spam_bound = 0.53  # 0.53 -- best
+
     for message in fold["test"]:
-        p = sd.get_message_spam_probability(__dict, message)
+        p = sd.get_message_spam_probability(__dict, spam_bound / (1 - spam_bound), message)
         orig.append(message.type)
-        if p > 0.5:
+        if p > spam_bound:
             test.append(MessageType.SPAM)
         else:
             test.append(MessageType.LEGIT)
