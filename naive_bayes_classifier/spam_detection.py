@@ -9,6 +9,9 @@ __N = 1
 
 
 def __get_word_spam_probability(__dict, word, h, count_s, count_l):
+    if count_s == 0 or count_l == 0:
+        return -1.
+
     p_ws = __dict[word]["spam"] / float(count_s)
     p_wl = __dict[word]["legit"] / float(count_l)
 
@@ -31,21 +34,40 @@ def __get_denominators(__dict, words):
     return count_s, count_l
 
 
-def get_message_spam_probability(__dict, h, message):
-    words = np.concatenate((message.subject, message.text), axis=0)
-    count_s, count_l = __get_denominators(__dict, words)
-
-    # print count_s, count_l
+def get_subject_spam_probability(__s_dict, s_h, subject):
+    count_s, count_l = __get_denominators(__s_dict, subject)
     ps = []
 
-    for word in words:
-        if word in __dict:
-            p_sw = __get_word_spam_probability(__dict, word, h, count_s, count_l)
+    for word in subject:
+        if word in __s_dict:
+            p_sw = __get_word_spam_probability(__s_dict, word, s_h, count_s, count_l)
             ps.append(p_sw)
 
     ps = bounds(ps)
 
-    return naive_union(ps, h ** (1 - len(ps)))
+    return naive_union(ps, s_h ** (1 - len(ps)))
+
+
+def get_body_spam_probability(__b_dict, b_h, body):
+    count_s, count_l = __get_denominators(__b_dict, body)
+    ps = []
+
+    for word in body:
+        if word in __b_dict:
+            p_sw = __get_word_spam_probability(__b_dict, word, b_h, count_s, count_l)
+            ps.append(p_sw)
+
+    ps = bounds(ps)
+
+    return naive_union(ps, b_h ** (1 - len(ps)))
+
+
+def get_message_spam_probability(__s_dict, __b_dict, s_h, b_h, h, message):
+    s_p = get_subject_spam_probability(__s_dict, s_h, message.subject)
+    b_p = get_body_spam_probability(__b_dict, b_h, message.text)
+
+    p = s_p * b_p / (s_p * b_p + (1 - s_p) * (1 - b_p) * h ** 2)
+    return p
 
 
 def none(ps):

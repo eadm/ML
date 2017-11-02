@@ -16,7 +16,9 @@ for fold in cv:
     spam_bound = 0.53  # 0.53 -- best
 
     for message in fold["test"]:
-        p = sd.get_message_spam_probability(__dict, spam_bound / (1 - spam_bound), message)
+        h = spam_bound / (1 - spam_bound)
+        p = sd.get_message_spam_probability(__dict, __dict, h, h, 0.8, message)
+
         orig.append(message.type)
         if p > spam_bound:
             test.append(MessageType.SPAM)
