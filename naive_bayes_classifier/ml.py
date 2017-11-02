@@ -63,6 +63,16 @@ def contingency(cl_orig, cl_test):
 
     table["ACC"] = (table["TP"] + table["TN"]) / (table["P"] + table["N"])
 
+    if table["TP"] + table["FN"] == 0.:
+        table["SEN"] = 0.
+    else:
+        table["SEN"] = table["TP"] / (table["TP"] + table["FN"])
+
+    if table["TN"] + table["FP"] == 0.:
+        table["SPE"] = 0.
+    else:
+        table["SPE"] = table["TN"] / (table["TN"] + table["FP"])
+
     if table["P"] == 0.:
         table["TRP"] = 0.
     else:
