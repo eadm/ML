@@ -45,7 +45,7 @@ def get_subject_spam_probability(__s_dict, s_h, subject):
 
     ps = bounds(ps)
 
-    return log_union(ps, s_h ** (1 - len(ps)))
+    return log_union(ps, s_h)
 
 
 def get_body_spam_probability(__b_dict, b_h, body):
@@ -59,7 +59,7 @@ def get_body_spam_probability(__b_dict, b_h, body):
 
     ps = bounds(ps)
 
-    return naive_union(ps, b_h ** (1 - len(ps)))
+    return log_union(ps, b_h)
 
 
 def get_message_spam_probability(__s_dict, __b_dict, s_h, b_h, h, message):
@@ -89,6 +89,7 @@ def tops(ps):
 
 
 def naive_union(ps, h):
+    h = h ** (1 - len(ps))
     for p in ps:
         h *= (1 - p) / p
 
