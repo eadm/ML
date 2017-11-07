@@ -2,8 +2,8 @@ import numpy as np
 import math
 import scipy.special as sp
 
-__EPS = 10 ** -10
-__COUNT = 200
+__EPS = 10 ** -6
+__COUNT = 10
 
 __N = 1
 
@@ -45,7 +45,7 @@ def get_subject_spam_probability(__s_dict, s_h, subject):
 
     ps = bounds(ps)
 
-    return log_union(ps, s_h)
+    return naive_union(ps, s_h)
 
 
 def get_body_spam_probability(__b_dict, b_h, body):
@@ -59,7 +59,7 @@ def get_body_spam_probability(__b_dict, b_h, body):
 
     ps = bounds(ps)
 
-    return log_union(ps, b_h)
+    return naive_union(ps, b_h)
 
 
 def get_message_spam_probability(__s_dict, __b_dict, s_h, b_h, h, message):
