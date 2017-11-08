@@ -10,13 +10,13 @@ def contingency(cl_orig, cl_test):
     }
 
     for i in range(len(cl_orig)):
-        if cl_orig[i] == 0:
-            if cl_test[i] == 0:
+        if cl_orig[i] == -1:
+            if cl_test[i] == -1:
                 table["TN"] += 1
             else:
                 table["FP"] += 1
         else:
-            if cl_test[i] == 0:
+            if cl_test[i] == -1:
                 table["FN"] += 1
             else:
                 table["TP"] += 1
