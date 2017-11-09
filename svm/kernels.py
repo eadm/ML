@@ -7,4 +7,4 @@ def gaussian(x1, x2, sigma):
 
 
 def scalar(x1, x2):
-    return np.sum(x1 * x2)
+    return np.inner(x1, x2)
