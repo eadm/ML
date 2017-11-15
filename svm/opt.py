@@ -1,5 +1,6 @@
 import cvxopt
 import numpy as np
+from scipy.optimize import minimize
 
 
 def __compute_kernel(train_p, kernel, n):
@@ -8,6 +9,27 @@ def __compute_kernel(train_p, kernel, n):
         for j, x_j in enumerate(train_p):
             K[i, j] = kernel(x_i, x_j)
     return K
+
+
+def __svm(l, train_p, train_c, kernel):
+    s = 0.
+    for i in range(l.size):
+        for j in range(l.size):
+            s += l[i] * l[j] * train_c[i] * train_c[j] * kernel(train_p[i], train_p[j])
+
+    return -l.sum() + 0.5 * s
+
+
+def solve_sp(train_p, train_c, kernel, C):
+    def f(__x):
+        return __svm(__x, train_p, train_c, kernel)
+
+    bnds = [(0., C)] * train_c.size
+
+    def con(__x):
+        return np.dot(__x, train_c)
+
+    return minimize(f, np.zeros(train_c.size), method='SLSQP', bounds=bnds, constraints={"type": "eq", "fun": con})
 
 
 def solve(train_p, train_c, kernel, C):

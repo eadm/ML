@@ -14,8 +14,8 @@ folds = ml.folds(points, classes, FOLDS, shuffle=True)
 
 # print folds
 
-slv = opt.solve(folds[0]["train_p"], folds[0]["train_c"], kernels.scalar, 0.1)
-
+slv = opt.solve_sp(folds[0]["train_p"], folds[0]["train_c"], lambda x, y: kernels.gaussian(x, y, 0.5), 1.1)
+print slv
 slv = np.array(slv)
 print slv
 
