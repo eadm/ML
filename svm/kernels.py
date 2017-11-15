@@ -8,3 +8,7 @@ def gaussian(x1, x2, sigma):
 
 def scalar(x1, x2):
     return np.inner(x1, x2)
+
+
+def scalar2(x1, x2):
+    return np.dot(x1, x2) ** 2
