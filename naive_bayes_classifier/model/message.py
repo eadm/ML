@@ -2,8 +2,8 @@ class MessageType:
     def __init__(self):
         pass
 
-    SPAM = 1
-    LEGIT = 2
+    SPAM = 0
+    LEGIT = 1
 
 
 class Message:
