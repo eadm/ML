@@ -1,4 +1,10 @@
 import numpy as np
+import scipy.stats as spst
+
+
+def get_good_p_value(x, y):
+
+    return spst.wilcoxon(x, y)
 
 
 def get_p_value(x, y):
