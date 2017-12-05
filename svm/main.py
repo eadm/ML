@@ -4,24 +4,10 @@ import kernels
 import numpy as np
 import opt
 
-# f = open("out", mode='w+')
-
 FOLDS = 10
-
 points, classes = reader.read_data("chips.txt")
-# print points
-# print classes
-
 folds = ml.folds(points, classes, FOLDS, shuffle=True)
-
-# print folds
-# C = 2.5
 EPS = 0.0001
-
-# slv =
-# slv = slv.x
-# print slv
-# l = gradient(folds[0]["train_p"], folds[0]["train_c"], 0.1, 0.0001, lambda x, y: kernels.gaussian(x, y, 1.0))
 
 
 def get_w(ls, train_p, train_c):
@@ -43,8 +29,10 @@ def check_fold(fold, c, sigma):
     w = get_w(slv, fold["train_p"], fold["train_c"])
     b = get_b(w, fold["train_p"], fold["train_c"])
 
+    print w, b
+
     for p in fold["test_p"]:
-        ans_c.append(classify(p, slv, fold["train_p"], fold["train_c"], c, b))
+        ans_c.append(classify(p, slv, fold["train_p"], fold["train_c"], c, b, EPS))
     return ans_c
 
 
@@ -65,10 +53,10 @@ def check(_folds, c, sigma):
     return ctg
 
 
-def classify(p, ls, train_p, train_c, c, b):
+def classify(p, ls, train_p, train_c, c, b, eps):
     __sum = 0.0
     for i in range(ls.size):
-        if EPS < ls[i] < c - EPS:
+        if eps < ls[i] < c - eps:
             print "----"
             print ls[i]
             print train_p[i]
@@ -77,4 +65,4 @@ def classify(p, ls, train_p, train_c, c, b):
     return int(np.sign(__sum))
 
 
-check_fold(folds[0], 2.5, 1.2)
+# check_fold(folds[0], 2.5, 1.2)
