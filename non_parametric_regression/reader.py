@@ -7,6 +7,6 @@ def read_data(path):
     with open(path) as csvfile:
         reader = csv.DictReader(csvfile, delimiter=';')
         for row in reader:
-            x.append(row['x'])
-            y.append(row['y'])
+            x.append(float(row['x']))
+            y.append(float(row['y']))
     return np.array(x), np.array(y)
