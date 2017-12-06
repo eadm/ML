@@ -2,16 +2,17 @@ import reader
 import pylab as pl
 import math
 import knn
+import kernel_smoothing
 import numpy as np
 import ml
 
 
 def gaussian_kernel(u):
-    return 1. / math.sqrt(2 * math.pi) * math.exp(-0.5 * u**2) / 0.35
+    return 1. / math.sqrt(2 * math.pi) * math.exp(-0.5 * u**2)  # / 0.35
 
 
 def quartic_kernel(u):
-    return (1 - u ** 2) ** 2
+    return 15. / 16. * (1 - u ** 2) ** 2
 
 
 def minkowski(a, b, p):
@@ -27,11 +28,11 @@ min_mse = 99999999
 min_a = []
 # for i in range(len(kernels)):
 #     kernel = kernels[i]
-#     for k in range(1, 50):
+#     for k in np.arange(0.05, 4., 0.05):
 #         xs = np.array(x)  # np.arange(min(x), max(x), 0.01)
 #         ys = []
 #         for pt in xs:
-#             ys.append(knn.classify(x, y, pt, metric, kernel, k))
+#             ys.append(kernel_smoothing.smooth(x, y, pt, metric, kernel, k))
 #
 #         mse = ml.mse(y, ys)
 #         if mse < min_mse:
@@ -41,10 +42,11 @@ min_a = []
 
 print min_mse
 print min_a
-xs = np.array(x)  # np.arange(min(x), max(x), 0.01)
+xs = np.arange(min(x), max(x), 0.01)  # np.array(x)  #
 ys = []
 for pt in xs:
-    ys.append(knn.classify(x, y, pt, metric, gaussian_kernel, 10))
+    ys.append(kernel_smoothing.smooth(x, y, pt, metric, gaussian_kernel, 1.5))
+    # ys.append(knn.classify(x, y, pt, metric, gaussian_kernel, 10))
 
 pl.plot(xs, ys)
 pl.scatter(x, y)
