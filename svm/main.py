@@ -3,6 +3,7 @@ import ml
 import kernels
 import numpy as np
 import opt
+from sklearn import svm
 
 FOLDS = 10
 points, classes = reader.read_data("chips.txt")
@@ -23,7 +24,10 @@ def get_b(w, train_p, train_c):
 
 def check_fold(fold, c, sigma):
     ans_c = []
-    slv = opt.solve_sp(fold["train_p"], fold["train_c"], lambda x, y: kernels.gaussian(x, y, sigma), c).x
+
+    def kernel(x, y):
+        return kernels.gaussian(x, y, sigma)
+    slv = opt.solve_sp(fold["train_p"], fold["train_c"], kernel, c).x
 
     print slv
     w = get_w(slv, fold["train_p"], fold["train_c"])
@@ -32,7 +36,7 @@ def check_fold(fold, c, sigma):
     print w, b
 
     for p in fold["test_p"]:
-        ans_c.append(classify(p, slv, fold["train_p"], fold["train_c"], c, b, EPS))
+        ans_c.append(classify(p, slv, fold["train_p"], fold["train_c"], kernel, c, b, EPS))
     return ans_c
 
 
@@ -46,14 +50,14 @@ def check(_folds, c, sigma):
     ans_p = []
     for fold in _folds:
         ans_c.extend(check_fold(fold, c, sigma))
-        ans_p.extend(fold["train_c"])
+        ans_p.extend(fold["test_c"])
 
     ctg = ml.contingency(ans_p, ans_c)
     print ctg
     return ctg
 
 
-def classify(p, ls, train_p, train_c, c, b, eps):
+def classify(p, ls, train_p, train_c, ker, c, b, eps):
     __sum = 0.0
     for i in range(ls.size):
         if eps < ls[i] < c - eps:
@@ -61,8 +65,9 @@ def classify(p, ls, train_p, train_c, c, b, eps):
             print ls[i]
             print train_p[i]
             print train_c[i]
-            __sum += np.dot(train_p[i], p) * ls[i] * train_c[i]
+            __sum += ker(train_p[i], p) * ls[i] * train_c[i]
     return int(np.sign(__sum))
 
 
 # check_fold(folds[0], 2.5, 1.2)
+check(folds, 0.8, 0.5)
