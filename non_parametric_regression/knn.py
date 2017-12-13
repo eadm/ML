@@ -8,18 +8,21 @@ def classify(train_p, train_c, point, metric, kernel, k):
     nbs = [[metric(point, x[0]), x[0], x[1]] for x in data]
     nbs.sort(key=lambda __x: __x[0])
     stats = 0.
+    mult = 0.
     for i in range(k):
         p, c = nbs[i][1], nbs[i][2]
         if nbs[i][0] == nbs[k][0] == 0.:
             window = 0.
         else:
             window = nbs[i][0] / nbs[k][0]
-        stats += c * kernel(window)
+        w = kernel(window)
+        mult += w
+        stats += c * w
 
     # print stats
     # print k
     # print "---"
-    return stats / float(k)
+    return stats / mult
 
 
 def validation(container, metric, kernel, k):
