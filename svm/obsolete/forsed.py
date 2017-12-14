@@ -1,12 +1,12 @@
 import numpy as np
-import reader
-import ml
-import kernels
-from main import classify
+import svm.reader
+import svm.ml
+import svm.kernels
+from svm.main import classify
 
 FOLDS = 10
-points, classes = reader.read_data("chips.txt")
-folds = ml.folds(points, classes, FOLDS, shuffle=True)
+points, classes = svm.reader.read_data("chips.txt")
+folds = svm.ml.folds(points, classes, FOLDS, shuffle=True)
 EPS = 0.001
 sigma = 1.2
 C = 2.5
@@ -44,7 +44,7 @@ b = 3.96412127856
 
 def get_classes(_points):
     def kernel(x, y):
-        return kernels.gaussian(x, y, sigma)
+        return svm.kernels.gaussian(x, y, sigma)
 
     fold = folds[0]
     ans_c = []

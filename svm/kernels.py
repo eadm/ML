@@ -1,5 +1,11 @@
 import math
 import numpy as np
+from sklearn.metrics.pairwise import pairwise_kernels
+
+
+def rbf(gamma):
+    kernel_args = {"gamma": gamma}
+    return lambda X, Y: pairwise_kernels(X, Y=Y, metric="rbf", **kernel_args)
 
 
 def gaussian(x1, x2, sigma):

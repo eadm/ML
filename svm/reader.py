@@ -3,9 +3,9 @@ import numpy as np
 
 def __convert_class(c):
     if c == 0:
-        return -1
+        return -1.
     else:
-        return 1
+        return 1.
 
 
 def read_data(path):

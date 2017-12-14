@@ -2,10 +2,10 @@ import numpy as np
 import pylab as pl
 from matplotlib.colors import ListedColormap
 
-import reader
+import svm.reader
 from svm import SVM
 
-points, classes = reader.read_data("chips.txt")
+points, classes = svm.reader.read_data("chips.txt")
 
 color_map = ListedColormap(["#012D41", "#1BA5B8", "#FF404E", "#F3B562"])
 color_map2 = ListedColormap(["#FF404E", "#1BA5B8"])
