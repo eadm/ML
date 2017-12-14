@@ -24,7 +24,7 @@ def check(_folds):
 
 
 check(folds)
-# clf = svm.SVC()
+# clf = o_svm.SVC()
 # print clf.fit(points, classes)
 
 # print clf.predict([[2., 2.]])

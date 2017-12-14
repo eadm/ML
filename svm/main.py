@@ -61,13 +61,13 @@ def classify(p, ls, train_p, train_c, ker, c, b, eps):
     __sum = 0.0
     for i in range(ls.size):
         if eps < ls[i] < c - eps:
-            print "----"
-            print ls[i]
-            print train_p[i]
-            print train_c[i]
+            # print "----"
+            # print ls[i]
+            # print train_p[i]
+            # print train_c[i]
             __sum += ker(train_p[i], p) * ls[i] * train_c[i]
     return int(np.sign(__sum))
 
 
 # check_fold(folds[0], 2.5, 1.2)
-check(folds, 0.8, 0.5)
+# check(folds, 0.8, 0.5)
