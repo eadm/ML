@@ -38,7 +38,7 @@ def create_mesh(_points, _classes):
 
 def check():
     folds = ml.folds(points, classes, FOLDS, shuffle=True)
-    svm = SVM(C=10, gamma=2.0)
+    svm = SVM(C=5, gamma=1.5)
 
     ans_c = []
     ans_p = []
@@ -51,8 +51,9 @@ def check():
         print ml.contingency(p, c)
 
     ctg = ml.contingency(ans_p, ans_c)
+    print ""
     print ctg
 
 
-# check()
-show_plot()
+check()
+# show_plot()

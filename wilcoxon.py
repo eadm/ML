@@ -3,20 +3,15 @@ import scipy.stats as spst
 
 
 def get_good_p_value(x, y):
-
-    return spst.wilcoxon(x, y)
+    _, p_value = spst.wilcoxon(x, y)
+    return p_value
 
 
 def get_p_value(x, y):
-
     xy = x - y
-    n = 0
+    n = np.count_nonzero(xy)
 
-    for i in range(len(xy)):
-        if np.sign(xy[i]) != 0:
-            n += 1
-
-    r = (n + 1) / 2.
+    r = (1 + n) / 2.
     r_plus = r_minus = 0
 
     for i in range(len(xy)):
@@ -31,6 +26,6 @@ def get_p_value(x, y):
 
     se = np.sqrt(se / 24)
     z = (t - mn) / se
-    p_value = 2. * abs(z)
+    p_value = 2. * spst.distributions.norm.sf(abs(z))
 
     return p_value
