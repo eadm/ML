@@ -1,3 +1,7 @@
 output
 *.pyc
 svm/theory
+optimizer.so
+optimizer.o
+optimizer.o.d
+optimizer.cpp
