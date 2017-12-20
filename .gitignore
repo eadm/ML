@@ -1,2 +1,4 @@
 output
 *.pyc
+cnn/data
+*.pdf
