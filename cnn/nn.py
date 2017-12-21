@@ -13,7 +13,7 @@ class NN:
         self.layers.append(matrix)
 
     def add_empty_layer(self, x, y):
-        self.layers.append(np.random.rand(x, y) * (1. / x) - (1. / 2. / x))
+        self.layers.append(np.random.rand(x, y).T * (1. / x) - (1. / 2. / x))
 
     def to_file(self, path):
         f = open(path, 'w')
@@ -29,23 +29,23 @@ class NN:
 
     def predict(self, x):
         for layer in self.layers:
-            x = self.sigma(np.dot(x, layer))
+            x = self.sigma(np.dot(layer, x))
         return x
 
     def train(self, x, y):
         y1 = x
         ys1 = [x]
         for layer in self.layers:
-            y1 = self.sigma(np.dot(y1, layer))
+            y1 = self.sigma(np.dot(layer, y1))
             ys1.append(y1)
 
-        es = [y1 - self.sigma(y)]
+        es = [y1 - y]
         q = np.sum(es[-1] ** 2)
 
         for i in reversed(range(len(self.layers))):
             layer = self.layers[i]
             s1 = self.sigma1(ys1[i + 1])
-            eps = np.dot(layer, es[-1] * s1)
+            eps = np.dot(layer.T, es[-1] * s1)
             es.append(eps)
         es = list(reversed(es))
 
