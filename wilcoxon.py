@@ -2,9 +2,9 @@ import numpy as np
 import scipy.stats as spst
 
 
-def get_good_p_value(x, y):
-    _, p_value = spst.wilcoxon(x, y)
-    return p_value
+# def get_good_p_value(x, y):
+#     _, p_value = spst.wilcoxon(x, y)
+#     return p_value
 
 
 def get_p_value(x, y):

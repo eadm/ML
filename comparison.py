@@ -44,7 +44,7 @@ def compare():
     x = np.array(x)
     y = np.array(y)
 
-    print wilcoxon.get_good_p_value(x, y)
+    # print wilcoxon.get_good_p_value(x, y)
     print wilcoxon.get_p_value(x, y)
 
 
